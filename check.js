@@ -87,7 +87,9 @@ function render(history, latest) {
     .map((d) => {
       const cls = barClass(d.uptimePct);
       const label = d.uptimePct === null ? 'No data' : `${d.uptimePct.toFixed(1)}% uptime`;
-      const sub = d.avgMs ? ` &middot; ${d.avgMs}ms avg` : '';
+      // Literal middot, not the &middot; entity - this lands in a native title="" tooltip, which
+      // renders text as-is rather than decoding HTML entities.
+      const sub = d.avgMs ? ` · ${d.avgMs}ms avg` : '';
       return `<span class="status-bar ${cls}" title="${esc(d.date)}: ${esc(label)}${esc(sub)}"></span>`;
     })
     .join('');
@@ -108,7 +110,7 @@ function render(history, latest) {
 <meta http-equiv="refresh" content="120" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>sky.melloo.me Status</title>
-<link rel="icon" href="data:," />
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAJFBMVEUAAACcTJb82uT3tdTjgbGHO2tuSjtXKyOZh12wpnuKblc4HhtG0pcFAAAAAXRSTlMAQObYZgAAAGBJREFUeNqViTESxDAIAxECnw3//+9pnMRFuuyo2ZV9AXi5E+fa7o7ncrwDATrvgqC7oEbsEBJqEcwrUISGNJGxJbQcbdaVGRvmb1Rb91wp5FnVbaa0Vo2jdqc5Lz3p0T/LzQKpQT/BRgAAAABJRU5ErkJggg==" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
