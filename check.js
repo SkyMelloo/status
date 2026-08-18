@@ -230,6 +230,9 @@ async function main() {
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(trimmed));
   fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
   fs.writeFileSync(OUT_PATH, render(trimmed, latest));
+  // Without this, GitHub Pages runs the output through Jekyll by default and the build fails -
+  // this is a plain static file, not a Jekyll site.
+  fs.writeFileSync(path.join(path.dirname(OUT_PATH), '.nojekyll'), '');
 
   console.log(`Checked ${TARGET}: ok=${latest.ok} status=${latest.status} ms=${latest.ms}`);
 }
