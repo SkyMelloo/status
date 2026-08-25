@@ -2,6 +2,7 @@
 
 [![Check status](https://github.com/SkyMelloo/status/actions/workflows/check.yml/badge.svg)](https://github.com/SkyMelloo/status/actions/workflows/check.yml)
 [![Live page](https://img.shields.io/badge/status-status.melloo.me-informational.svg)](https://status.melloo.me)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Independent uptime monitor for [sky.melloo.me](https://sky.melloo.me), published at
 [status.melloo.me](https://status.melloo.me).
