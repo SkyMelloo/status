@@ -4,21 +4,32 @@
 [![Live page](https://img.shields.io/badge/status-status.melloo.me-informational.svg)](https://status.melloo.me)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Independent uptime monitor for [sky.melloo.me](https://sky.melloo.me), published at
+Independent uptime monitor for every real SkyMelloo service, published at
 [status.melloo.me](https://status.melloo.me).
 
 It runs entirely on GitHub's infrastructure rather than sky.melloo.me's own servers, on purpose -
 a status page that goes down with the thing it's monitoring isn't a status page. A GitHub Actions
-workflow pings the site every 5 minutes, appends the result to `data/history.json`, and regenerates
-`docs/index.html`, which GitHub Pages then serves. No server to run, no database, no hosting cost.
+workflow checks every service every 5 minutes, appends the results to `data/history.json`, and
+regenerates `docs/index.html`, which GitHub Pages then serves. No server to run, no database, no
+hosting cost.
+
+## What it checks
+
+Our own stack, plus the upstream APIs sky.melloo.me actually depends on - if one of these is down,
+odds are something on the site is degraded too, even if our own servers are fine:
+
+- **Website** - `sky.melloo.me`
+- **Backend API** - `sky.melloo.me/api/health`
+- **Hypixel API** - `api.hypixel.net`
+- **Mojang API** - `api.mojang.com`
+- **Discord API** - `discord.com/api`
 
 ## How it works
 
-- **`check.js`** - does the whole job: fetch the target with a 15s timeout, record `{at, ok,
-  status, ms}`, trim history older than 45 days, render the page.
-- **`data/history.json`** - raw check log, one entry per run (~13k rows at full retention). The
-  page only ever shows a daily rollup; raw data is what makes the uptime/response-time figures
-  possible without pulling in a database.
+- **`check.js`** - does the whole job: fetch every service above with a 15s timeout each, record
+  `{at, ok, status, ms}` per service, trim history older than 45 days, render the page.
+- **`data/history.json`** - raw check log per service. The page only ever shows a daily rollup;
+  raw data is what makes the uptime/response-time figures possible without pulling in a database.
 - **`docs/index.html`** - fully static, generated fresh on every run. `docs/` is also GitHub
   Pages' publish directory for this repo.
 - **`.github/workflows/check.yml`** - the schedule (`*/5 * * * *`), plus commit + Pages deploy.
